@@ -99,7 +99,7 @@
                     </div>
                 </div>
             </div>
-            <button class="btn btn-style">Book Now</button>
+            <button id="book-button" class="btn btn-style">Book Now</button>
         </div>
 
         <div class="booking-content">
@@ -116,12 +116,10 @@
             countTicket(true, 'first-class-ticket');
         });
 
-        
         // first class ticket count decrease button event handler
         document.getElementById('first-class-ticket-decrease').addEventListener('click', function(){
             countTicket(false, 'first-class-ticket');
         });
-
 
         // economy ticket count increase button event handler
         document.getElementById('economy-ticket-increase').addEventListener('click', function(){
@@ -146,10 +144,10 @@
                 currentTicketCount--;
             }
             ticketInput.value = currentTicketCount;
-            calculateSubtotalVatTotal();
+            calculateSubtotalVatTotal(); // calculate subtotal, tax and total amount
         }
 
-        // calculate subtotal, tax and total price 
+        // calculate subtotal, tax and total amount 
         function calculateSubtotalVatTotal(){
             const firstClassTicketCount = getInputTicketValue('first-class-ticket');
             const economyTicketCount = getInputTicketValue('economy-ticket');
@@ -160,13 +158,35 @@
             const totalAmount = vatAmount + subtotalAmount;
             document.getElementById('total-amount').innerText = '$' + totalAmount;
         }
-        
 
         // get input value
         function getInputTicketValue(ticketType){
             const ticketInput = document.getElementById(ticketType + '-count');
             const ticketCount = parseInt(ticketInput.value);
             return ticketCount;
+        }
+
+        // book-now button event handler
+        document.getElementById('book-button').addEventListener('click', function(){
+            const firstClassTicket = getInputTicketValue('first-class-ticket');
+            const economyTicket = getInputTicketValue('economy-ticket');
+            if(firstClassTicket > 0 || economyTicket > 0){
+                alert('You have successfully book ' + firstClassTicket + ' First Class Ticket and ' + economyTicket + ' Economy Ticket');
+            }
+            else{
+                alert('Must buy at least one ticket');
+            }
+            getAnId('first-class-ticket-count').value = '0';
+            getAnId('economy-ticket-count').value = '0';
+            getAnId('subtotal').innerText = '$0';
+            getAnId('vat-amount').innerText = '$0';
+            getAnId('total-amount').innerText = '$0';
+        });
+
+        // select an id
+        function getAnId(id){
+            let getId = document.getElementById(id);
+            return getId;
         }
     </script>
 </body>
